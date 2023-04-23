@@ -59,9 +59,16 @@
 //! # assert_eq!(bytes, [0x2b].as_ref());
 //! ```
 
+#![no_std]
+#![feature(error_in_core)]
+
 #[cfg(test)]
 #[macro_use]
 extern crate quickcheck;
+extern crate alloc;
+extern crate core2;
+
+use core as std;
 
 pub mod de;
 mod error;
@@ -96,7 +103,7 @@ pub fn test_encode_decode<V: Sized + PartialEq + Serialize + Deserialize>(v: &V)
     v.serialize(&mut se)?;
     let bytes = se.finalize();
 
-    let mut raw = de::Deserializer::from(std::io::Cursor::new(bytes));
+    let mut raw = de::Deserializer::from(core2::io::Cursor::new(bytes));
     let v_ = Deserialize::deserialize(&mut raw)?;
 
     Ok(v == &v_)

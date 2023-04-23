@@ -9,17 +9,18 @@
 //!
 //! This is why all the objects here are marked as deprecated
 
+use alloc::boxed::Box;
+use alloc::collections::BTreeMap;
+use alloc::format;
+use alloc::string::String;
+use alloc::vec::Vec;
+use core2::io::{BufRead, Write};
 use de::*;
 use error::Error;
 use len::Len;
 use result::Result;
 use se::*;
 use types::{Special, Type};
-
-use std::{
-    collections::BTreeMap,
-    io::{BufRead, Write},
-};
 
 #[cfg(test)]
 use quickcheck::{Arbitrary, Gen};
@@ -300,6 +301,8 @@ impl Arbitrary for Value {
 
 #[cfg(test)]
 mod test {
+    use alloc::borrow::ToOwned;
+    use alloc::vec;
     use super::super::test_encode_decode;
     use super::*;
 

@@ -1,5 +1,7 @@
 //! CBOR serialisation tooling
-use std::io::Write;
+use alloc::string::String;
+use alloc::vec::Vec;
+use core2::io::Write;
 
 use error::Error;
 use len::{Len, LenSz, StringLenSz, Sz};
@@ -788,6 +790,8 @@ serialize_array!(
 
 #[cfg(test)]
 mod test {
+    use alloc::vec;
+    use alloc::vec::Vec;
     use super::*;
 
     #[test]

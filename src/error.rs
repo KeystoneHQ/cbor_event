@@ -1,4 +1,6 @@
-use std::{error, fmt};
+use alloc::string::{String};
+use alloc::vec::Vec;
+use core::{fmt};
 
 use len;
 use types::Type;
@@ -25,9 +27,9 @@ pub enum Error {
     UnknownLenType(u8),
     IndefiniteLenNotSupported(Type),
     WrongLen(u64, len::Len, &'static str),
-    InvalidTextError(::std::string::FromUtf8Error),
+    InvalidTextError(alloc::string::FromUtf8Error),
     CannotParse(Type, Vec<u8>),
-    IoError(::std::io::Error),
+    IoError(core2::io::Error),
     TrailingData,
     InvalidIndefiniteString,
     InvalidLenPassed(len::Sz),
@@ -35,13 +37,13 @@ pub enum Error {
 
     CustomError(String),
 }
-impl From<::std::string::FromUtf8Error> for Error {
-    fn from(e: ::std::string::FromUtf8Error) -> Self {
+impl From<alloc::string::FromUtf8Error> for Error {
+    fn from(e: alloc::string::FromUtf8Error) -> Self {
         Error::InvalidTextError(e)
     }
 }
-impl From<::std::io::Error> for Error {
-    fn from(e: ::std::io::Error) -> Self {
+impl From<core2::io::Error> for Error {
+    fn from(e: core2::io::Error) -> Self {
         Error::IoError(e)
     }
 }
@@ -100,12 +102,12 @@ impl fmt::Display for Error {
     }
 }
 
-impl error::Error for Error {
-    fn cause(&self) -> Option<&dyn error::Error> {
-        match self {
-            Error::IoError(ref error) => Some(error),
-            Error::InvalidTextError(ref error) => Some(error),
-            _ => None,
-        }
-    }
-}
+// impl error::Error for Error {
+//     fn cause(&self) -> Option<&dyn error::Error> {
+//         match self {
+//             Error::IoError(ref error) => Some(error),
+//             Error::InvalidTextError(ref error) => Some(error),
+//             _ => None,
+//         }
+//     }
+// }

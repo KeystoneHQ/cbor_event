@@ -1,9 +1,13 @@
 //! CBOR deserialisation tooling
 
+use alloc::collections::BTreeMap;
+use alloc::string::String;
+use alloc::{format, vec};
+use alloc::vec::Vec;
 use error::Error;
 use len::{Len, LenSz, StringLenSz, Sz};
 use result::Result;
-use std::{self, collections::BTreeMap, io::BufRead};
+use core2::io::{BufRead, Read};
 use types::{Special, Type};
 
 pub trait Deserialize: Sized {
@@ -15,7 +19,7 @@ pub trait Deserialize: Sized {
 impl Deserialize for u8 {
     fn deserialize<R: BufRead>(raw: &mut Deserializer<R>) -> Result<Self> {
         let n = raw.unsigned_integer()?;
-        if n > std::u8::MAX as u64 {
+        if n > u8::MAX as u64 {
             Err(Error::ExpectedU8)
         } else {
             Ok(n as Self)
@@ -26,7 +30,7 @@ impl Deserialize for u8 {
 impl Deserialize for u16 {
     fn deserialize<R: BufRead>(raw: &mut Deserializer<R>) -> Result<Self> {
         let n = raw.unsigned_integer()?;
-        if n > std::u16::MAX as u64 {
+        if n > u16::MAX as u64 {
             Err(Error::ExpectedU16)
         } else {
             Ok(n as Self)
@@ -37,7 +41,7 @@ impl Deserialize for u16 {
 impl Deserialize for u32 {
     fn deserialize<R: BufRead>(raw: &mut Deserializer<R>) -> Result<Self> {
         let n = raw.unsigned_integer()?;
-        if n > std::u32::MAX as u64 {
+        if n > u32::MAX as u64 {
             Err(Error::ExpectedU32)
         } else {
             Ok(n as Self)
@@ -459,7 +463,6 @@ impl<R: BufRead> Deserializer<R> {
     ///
     /// Same as `bytes` but also returns `StringLenSz` for details about the encoding used.
     pub fn bytes_sz(&mut self) -> Result<(Vec<u8>, StringLenSz)> {
-        use std::io::Read;
 
         self.cbor_expect_type(Type::Bytes)?;
         let len_sz = self.cbor_len_sz()?;
@@ -867,7 +870,7 @@ deserialize_array!(
 #[allow(clippy::bool_assert_comparison)]
 mod test {
     use super::*;
-    use std::io::Cursor;
+    use core2::io::Cursor;
 
     #[test]
     fn negative_integer() {
