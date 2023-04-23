@@ -101,13 +101,3 @@ impl fmt::Display for Error {
         }
     }
 }
-
-// impl error::Error for Error {
-//     fn cause(&self) -> Option<&dyn error::Error> {
-//         match self {
-//             Error::IoError(ref error) => Some(error),
-//             Error::InvalidTextError(ref error) => Some(error),
-//             _ => None,
-//         }
-//     }
-// }
